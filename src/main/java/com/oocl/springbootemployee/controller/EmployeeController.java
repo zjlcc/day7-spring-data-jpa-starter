@@ -23,12 +23,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
-
-    private final EmployeeRepository employeeRepository;
     private final EmployeeService employeeService;
 
-    public EmployeeController(EmployeeRepository employeeRepository, EmployeeService employeeService) {
-        this.employeeRepository = employeeRepository;
+    public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
 
@@ -39,33 +36,33 @@ public class EmployeeController {
 
     @GetMapping("/{id}")
     public Employee getEmployeeById(@PathVariable Integer id) {
-        return employeeRepository.getEmployeeById(id);
+        return employeeService.getEmployeeById(id);
     }
 
     @GetMapping(params = {"gender"})
     public List<Employee> getEmployeesByGender(@RequestParam Gender gender) {
-        return employeeRepository.getEmployeesByGender(gender);
+        return employeeService.getEmployeesByGender(gender);
     }
 
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     public Employee addEmployee(@RequestBody Employee employee) {
-        return employeeRepository.addEmployee(employee);
+        return employeeService.creat(employee);
     }
 
     @PutMapping("/{id}")
     public Employee updateEmployee(@PathVariable Integer id, @RequestBody Employee employee) {
-        return employeeRepository.updateEmployee(id, employee);
+        return employeeService.update(id, employee);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeEmployee(@PathVariable Integer id) {
-        employeeRepository.removeEmployee(id);
+       employeeService.delete(id);
     }
 
     @GetMapping(params = {"pageIndex", "pageSize"})
     public List<Employee> getAllByPageSize(@RequestParam Integer pageIndex, @RequestParam Integer pageSize){
-        return employeeRepository.getAllByPageSize(pageIndex, pageSize);
+        return employeeService.findAllByPageSize(pageIndex, pageSize);
     }
 }
