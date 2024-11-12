@@ -1,6 +1,7 @@
 package com.oocl.springbootemployee.service;
 
 import com.oocl.springbootemployee.exception.EmployeeAgeNotValidException;
+import com.oocl.springbootemployee.exception.EmployeeAgeSalaryNotMatchedException;
 import com.oocl.springbootemployee.model.Employee;
 import com.oocl.springbootemployee.model.Gender;
 import com.oocl.springbootemployee.repository.IEmployeeRepository;
@@ -78,5 +79,17 @@ class EmployeeServiceTest {
         employeeService.creat(lucy);
         /* then */
         verify(mockedEmployeeRepository).addEmployee(argThat(Employee::getActive));
+    }
+
+    @Test
+    void should_throw_EmployeeAgeSalaryNotMatchedException_when_create_given_a_employee_with_age_over_30_and_salary_below_20K() {
+        //given
+        IEmployeeRepository mockedEmployeeRepository = mock(IEmployeeRepository.class);
+        Employee bob = new Employee(1, "Bob", 31, Gender.FEMALE, 8000.0);
+        EmployeeService employeeService = new EmployeeService(mockedEmployeeRepository);
+        //when
+        //then
+        assertThrows(EmployeeAgeSalaryNotMatchedException.class, () -> employeeService.creat(bob));
+        verify(mockedEmployeeRepository, never()).addEmployee(any());
     }
 }
