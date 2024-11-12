@@ -2,6 +2,7 @@ package com.oocl.springbootemployee.service;
 
 import com.oocl.springbootemployee.exception.EmployeeAgeNotValidException;
 import com.oocl.springbootemployee.exception.EmployeeAgeSalaryNotMatchedException;
+import com.oocl.springbootemployee.exception.EmployeeInactiveException;
 import com.oocl.springbootemployee.model.Employee;
 import com.oocl.springbootemployee.model.Gender;
 import com.oocl.springbootemployee.repository.IEmployeeRepository;
@@ -91,5 +92,18 @@ class EmployeeServiceTest {
         //then
         assertThrows(EmployeeAgeSalaryNotMatchedException.class, () -> employeeService.creat(bob));
         verify(mockedEmployeeRepository, never()).addEmployee(any());
+    }
+
+    @Test
+    void should_throw_EmployeeInactiveException_when_update_inactive_employee() {
+        //given
+        IEmployeeRepository mockedEmployeeRepository = mock(IEmployeeRepository.class);
+        Employee inactiveEmployee = new Employee(1, "Bob", 31, Gender.FEMALE, 8000.0);
+        when(mockedEmployeeRepository.getEmployeeById(1)).thenReturn(inactiveEmployee);
+        EmployeeService employeeService = new EmployeeService(mockedEmployeeRepository);
+        //when
+        //then
+        assertThrows(EmployeeInactiveException.class, () -> employeeService.update(1, inactiveEmployee));
+        verify(mockedEmployeeRepository, never()).updateEmployee(anyInt(), any());
     }
 }

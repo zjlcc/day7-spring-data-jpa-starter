@@ -2,6 +2,7 @@ package com.oocl.springbootemployee.service;
 
 import com.oocl.springbootemployee.exception.EmployeeAgeNotValidException;
 import com.oocl.springbootemployee.exception.EmployeeAgeSalaryNotMatchedException;
+import com.oocl.springbootemployee.exception.EmployeeInactiveException;
 import com.oocl.springbootemployee.model.Employee;
 import com.oocl.springbootemployee.repository.IEmployeeRepository;
 import org.springframework.stereotype.Service;
@@ -27,5 +28,13 @@ public class EmployeeService {
 
         employee.setActive(true);
         return employeeRepository.addEmployee(employee);
+    }
+
+    public Employee update(Integer employeeId , Employee employee) {
+        Employee employeeExisted = employeeRepository.getEmployeeById(employeeId);
+        if(!employeeExisted.getActive())
+            throw new EmployeeInactiveException();
+
+        return employeeRepository.updateEmployee(employeeId, employee);
     }
 }
