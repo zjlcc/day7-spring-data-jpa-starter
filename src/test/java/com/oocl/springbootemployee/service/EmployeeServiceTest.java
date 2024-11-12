@@ -99,6 +99,7 @@ class EmployeeServiceTest {
         //given
         IEmployeeRepository mockedEmployeeRepository = mock(IEmployeeRepository.class);
         Employee inactiveEmployee = new Employee(1, "Bob", 31, Gender.FEMALE, 8000.0);
+        inactiveEmployee.setActive(false);
         when(mockedEmployeeRepository.getEmployeeById(1)).thenReturn(inactiveEmployee);
         EmployeeService employeeService = new EmployeeService(mockedEmployeeRepository);
         //when
