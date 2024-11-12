@@ -10,13 +10,14 @@ import com.oocl.springbootemployee.model.Gender;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class EmployeeRepository {
+public class EmployeeRepository implements IEmployeeRepository {
     private final List<Employee> employees = new ArrayList<>();
 
     public EmployeeRepository() {
         initEmployeeData();
     }
 
+    @Override
     public List<Employee> getAll() {
         return this.employees;
     }
@@ -29,6 +30,7 @@ public class EmployeeRepository {
         this.employees.add(new Employee(5, "Michael Jones", 40, Gender.MALE, 7000.0));
     }
 
+    @Override
     public Employee getEmployeeById(Integer id) {
         return employees.stream()
             .filter(employee -> Objects.equals(employee.getId(), id))
@@ -36,12 +38,14 @@ public class EmployeeRepository {
             .orElse(null);
     }
 
+    @Override
     public List<Employee> getEmployeesByGender(Gender gender) {
         return employees.stream()
             .filter(employee -> employee.getGender().equals(gender))
             .collect(Collectors.toList());
     }
 
+    @Override
     public Employee addEmployee(Employee employee) {
         final Employee newEmployee = new Employee(
             this.getAll().size() + 1,
@@ -54,6 +58,7 @@ public class EmployeeRepository {
         return newEmployee;
     }
 
+    @Override
     public Employee updateEmployee(Integer id, Employee employee) {
         return employees.stream()
             .filter(storedEmployee -> storedEmployee.getId().equals(id))
@@ -78,10 +83,12 @@ public class EmployeeRepository {
         return employeeStored;
     }
 
+    @Override
     public void removeEmployee(Integer id) {
         employees.removeIf(employee -> Objects.equals(employee.getId(), id));
     }
 
+    @Override
     public List<Employee> getAllByPageSize(Integer pageIndex, Integer pageSize) {
         return employees.stream()
             .skip((long) (pageIndex - 1) * pageSize)
