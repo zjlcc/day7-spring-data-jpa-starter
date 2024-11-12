@@ -25,4 +25,16 @@ class EmployeeServiceTest {
         assertEquals(6, allEmployees.size());
         assertEquals("Lucy", allEmployees.get(5).getName());
     }
+
+    @Test
+    void should_return_the_created_employee_when_create_given_a_employee() {
+        //given
+        EmployeeRepository employeeRepository = new EmployeeRepository();
+        EmployeeService employeeService = new EmployeeService(employeeRepository);
+        Employee lucy = new Employee(6, "Lucy", 18, Gender.FEMALE, 8000.0);
+        //when
+        Employee createdEmployee = employeeService.creat(lucy);
+        //then
+        assertEquals("Lucy", createdEmployee.getName());
+    }
 }
