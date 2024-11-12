@@ -1,7 +1,7 @@
 package com.oocl.springbootemployee.service;
 
-import com.oocl.springbootemployee.controller.Employee;
-import com.oocl.springbootemployee.controller.EmployeeRepository;
+import com.oocl.springbootemployee.model.Employee;
+import com.oocl.springbootemployee.repository.EmployeeRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

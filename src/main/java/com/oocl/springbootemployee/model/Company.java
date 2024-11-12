@@ -1,4 +1,6 @@
-package com.oocl.springbootemployee.controller;
+package com.oocl.springbootemployee.model;
+
+import com.oocl.springbootemployee.model.Employee;
 
 import java.util.ArrayList;
 import java.util.List;

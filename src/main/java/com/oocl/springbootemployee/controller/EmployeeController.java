@@ -3,6 +3,9 @@ package com.oocl.springbootemployee.controller;
 
 import java.util.List;
 
+import com.oocl.springbootemployee.model.Employee;
+import com.oocl.springbootemployee.model.Gender;
+import com.oocl.springbootemployee.repository.EmployeeRepository;
 import com.oocl.springbootemployee.service.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;

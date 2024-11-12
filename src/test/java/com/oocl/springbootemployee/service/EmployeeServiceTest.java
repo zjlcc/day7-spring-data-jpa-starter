@@ -1,8 +1,8 @@
 package com.oocl.springbootemployee.service;
 
-import com.oocl.springbootemployee.controller.Employee;
-import com.oocl.springbootemployee.controller.EmployeeRepository;
-import com.oocl.springbootemployee.controller.Gender;
+import com.oocl.springbootemployee.model.Employee;
+import com.oocl.springbootemployee.repository.EmployeeRepository;
+import com.oocl.springbootemployee.model.Gender;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;

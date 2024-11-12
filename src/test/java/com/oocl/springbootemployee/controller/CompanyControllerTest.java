@@ -5,6 +5,11 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 import java.util.List;
+
+import com.oocl.springbootemployee.model.Company;
+import com.oocl.springbootemployee.model.Employee;
+import com.oocl.springbootemployee.model.Gender;
+import com.oocl.springbootemployee.repository.CompanyRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

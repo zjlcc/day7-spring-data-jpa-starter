@@ -1,4 +1,4 @@
-package com.oocl.springbootemployee.controller;
+package com.oocl.springbootemployee.model;
 
 public class Employee {
     private Integer id;
