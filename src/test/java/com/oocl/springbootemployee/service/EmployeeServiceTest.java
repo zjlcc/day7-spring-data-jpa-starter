@@ -12,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.never;
 
 class EmployeeServiceTest {
     @Test
@@ -67,5 +66,17 @@ class EmployeeServiceTest {
         //then
         assertThrows(EmployeeAgeNotValidException.class, () -> employeeService.creat(kitty));
         verify(mockedEmployeeRepository, never()).addEmployee(any());
+    }
+
+    @Test
+    void should_created_employee_active_when_create_employee() {
+        //given
+        IEmployeeRepository mockedEmployeeRepository = mock(IEmployeeRepository.class);
+        EmployeeService employeeService = new EmployeeService(mockedEmployeeRepository);
+        Employee lucy = new Employee(1, "Lucy", 18, Gender.FEMALE, 8000.0);
+        //when
+        employeeService.creat(lucy);
+        /* then */
+        verify(mockedEmployeeRepository).addEmployee(argThat(Employee::getActive));
     }
 }
