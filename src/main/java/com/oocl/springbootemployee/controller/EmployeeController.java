@@ -2,6 +2,8 @@ package com.oocl.springbootemployee.controller;
 
 
 import java.util.List;
+
+import com.oocl.springbootemployee.service.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,14 +22,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class EmployeeController {
 
     private final EmployeeRepository employeeRepository;
+    private final EmployeeService employeeService;
 
-    public EmployeeController(EmployeeRepository employeeRepository) {
+    public EmployeeController(EmployeeRepository employeeRepository, EmployeeService employeeService) {
         this.employeeRepository = employeeRepository;
+        this.employeeService = employeeService;
     }
 
     @GetMapping
     public List<Employee> getEmployeeList() {
-        return employeeRepository.getAll();
+        return employeeService.getAllEmployees();
     }
 
     @GetMapping("/{id}")
