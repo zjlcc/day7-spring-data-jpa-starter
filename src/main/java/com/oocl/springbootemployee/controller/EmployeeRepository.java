@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 public class EmployeeRepository {
     private final List<Employee> employees = new ArrayList<>();
 
-    EmployeeRepository() {
+    public EmployeeRepository() {
         initEmployeeData();
     }
 
