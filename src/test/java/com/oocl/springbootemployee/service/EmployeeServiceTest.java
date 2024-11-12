@@ -1,17 +1,18 @@
 package com.oocl.springbootemployee.service;
 
+import com.oocl.springbootemployee.exception.EmployeeAgeNotValidException;
 import com.oocl.springbootemployee.model.Employee;
 import com.oocl.springbootemployee.model.Gender;
-import com.oocl.springbootemployee.repository.EmployeeRepository;
 import com.oocl.springbootemployee.repository.IEmployeeRepository;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.never;
 
 class EmployeeServiceTest {
     @Test
@@ -42,5 +43,29 @@ class EmployeeServiceTest {
 
         //then
         assertEquals("Lucy", createdEmployee.getName());
+    }
+
+    @Test
+    void should_throw_EmployeeAgeNotValidException_when_create_given_a_employee_with_age_17() {
+        //given
+        IEmployeeRepository mockedEmployeeRepository = mock(IEmployeeRepository.class);
+        Employee kitty = new Employee(1, "Kitty", 6, Gender.FEMALE, 8000.0);
+        EmployeeService employeeService = new EmployeeService(mockedEmployeeRepository);
+        //when
+        //then
+        assertThrows(EmployeeAgeNotValidException.class, () -> employeeService.creat(kitty));
+        verify(mockedEmployeeRepository, never()).addEmployee(any());
+    }
+
+    @Test
+    void should_throw_EmployeeAgeNotValidException_when_create_given_a_employee_with_age_66() {
+        //given
+        IEmployeeRepository mockedEmployeeRepository = mock(IEmployeeRepository.class);
+        Employee kitty = new Employee(1, "Kitty", 66, Gender.FEMALE, 8000.0);
+        EmployeeService employeeService = new EmployeeService(mockedEmployeeRepository);
+        //when
+        //then
+        assertThrows(EmployeeAgeNotValidException.class, () -> employeeService.creat(kitty));
+        verify(mockedEmployeeRepository, never()).addEmployee(any());
     }
 }
