@@ -18,7 +18,7 @@ public class EmployeeRepository implements IEmployeeRepository {
     }
 
     @Override
-    public List<Employee> getAll() {
+    public List<Employee> findAll() {
         return this.employees;
     }
 
@@ -31,7 +31,7 @@ public class EmployeeRepository implements IEmployeeRepository {
     }
 
     @Override
-    public Employee getEmployeeById(Integer id) {
+    public Employee findById(Integer id) {
         return employees.stream()
             .filter(employee -> Objects.equals(employee.getId(), id))
             .findFirst()
@@ -39,16 +39,16 @@ public class EmployeeRepository implements IEmployeeRepository {
     }
 
     @Override
-    public List<Employee> getEmployeesByGender(Gender gender) {
+    public List<Employee> findAllByGender(Gender gender) {
         return employees.stream()
             .filter(employee -> employee.getGender().equals(gender))
             .collect(Collectors.toList());
     }
 
     @Override
-    public Employee addEmployee(Employee employee) {
+    public Employee create(Employee employee) {
         final Employee newEmployee = new Employee(
-            this.getAll().size() + 1,
+            this.findAll().size() + 1,
             employee.getName(),
             employee.getAge(),
             employee.getGender(),
@@ -59,7 +59,7 @@ public class EmployeeRepository implements IEmployeeRepository {
     }
 
     @Override
-    public Employee updateEmployee(Integer id, Employee employee) {
+    public Employee update(Integer id, Employee employee) {
         return employees.stream()
             .filter(storedEmployee -> storedEmployee.getId().equals(id))
             .findFirst()
@@ -84,12 +84,12 @@ public class EmployeeRepository implements IEmployeeRepository {
     }
 
     @Override
-    public void removeEmployee(Integer id) {
+    public void deleteById(Integer id) {
         employees.removeIf(employee -> Objects.equals(employee.getId(), id));
     }
 
     @Override
-    public List<Employee> getAllByPageSize(Integer pageIndex, Integer pageSize) {
+    public List<Employee> findAllByPage(Integer pageIndex, Integer pageSize) {
         return employees.stream()
             .skip((long) (pageIndex - 1) * pageSize)
             .limit(pageSize)

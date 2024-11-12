@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.oocl.springbootemployee.model.Employee;
 import com.oocl.springbootemployee.model.Gender;
-import com.oocl.springbootemployee.repository.EmployeeRepository;
 import com.oocl.springbootemployee.service.EmployeeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,17 +30,17 @@ public class EmployeeController {
 
     @GetMapping
     public List<Employee> getEmployeeList() {
-        return employeeService.getAllEmployees();
+        return employeeService.findAll();
     }
 
     @GetMapping("/{id}")
     public Employee getEmployeeById(@PathVariable Integer id) {
-        return employeeService.getEmployeeById(id);
+        return employeeService.findById(id);
     }
 
     @GetMapping(params = {"gender"})
     public List<Employee> getEmployeesByGender(@RequestParam Gender gender) {
-        return employeeService.getEmployeesByGender(gender);
+        return employeeService.findAll(gender);
     }
 
     @PostMapping
@@ -63,6 +62,6 @@ public class EmployeeController {
 
     @GetMapping(params = {"pageIndex", "pageSize"})
     public List<Employee> getAllByPageSize(@RequestParam Integer pageIndex, @RequestParam Integer pageSize){
-        return employeeService.findAllByPageSize(pageIndex, pageSize);
+        return employeeService.findAll(pageIndex, pageSize);
     }
 }

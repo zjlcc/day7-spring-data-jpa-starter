@@ -6,17 +6,17 @@ import com.oocl.springbootemployee.model.Gender;
 import java.util.List;
 
 public interface IEmployeeRepository {
-    List<Employee> getAll();
+    List<Employee> findAll();
 
-    Employee getEmployeeById(Integer id);
+    Employee findById(Integer id);
 
-    List<Employee> getEmployeesByGender(Gender gender);
+    List<Employee> findAllByGender(Gender gender);
 
-    Employee addEmployee(Employee employee);
+    Employee create(Employee employee);
 
-    Employee updateEmployee(Integer id, Employee employee);
+    Employee update(Integer id, Employee employee);
 
-    void removeEmployee(Integer id);
+    void deleteById(Integer id);
 
-    List<Employee> getAllByPageSize(Integer pageIndex, Integer pageSize);
+    List<Employee> findAllByPage(Integer pageIndex, Integer pageSize);
 }
