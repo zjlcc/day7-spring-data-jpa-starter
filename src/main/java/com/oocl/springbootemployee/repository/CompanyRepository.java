@@ -29,11 +29,11 @@ public class CompanyRepository {
         this.companies.add(new Company(2, "boot", employeesInBoot));
     }
 
-    public List<Company> getAll() {
+    public List<Company> findAll() {
         return this.companies;
     }
 
-    public Company getCompanyById(Integer id) {
+    public Company findById(Integer id) {
         return this.companies.stream()
             .filter(company -> company.getId().equals(id))
             .findFirst()

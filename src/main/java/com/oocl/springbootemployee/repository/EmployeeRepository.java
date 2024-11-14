@@ -10,14 +10,13 @@ import com.oocl.springbootemployee.model.Gender;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class EmployeeRepository implements IEmployeeRepository {
+public class EmployeeRepository {
     private final List<Employee> employees = new ArrayList<>();
 
     public EmployeeRepository() {
         initEmployeeData();
     }
 
-    @Override
     public List<Employee> findAll() {
         return this.employees;
     }
@@ -30,7 +29,6 @@ public class EmployeeRepository implements IEmployeeRepository {
         this.employees.add(new Employee(5, "Michael Jones", 40, Gender.MALE, 7000.0));
     }
 
-    @Override
     public Employee findById(Integer id) {
         return employees.stream()
             .filter(employee -> Objects.equals(employee.getId(), id))
@@ -38,14 +36,12 @@ public class EmployeeRepository implements IEmployeeRepository {
             .orElse(null);
     }
 
-    @Override
     public List<Employee> findAllByGender(Gender gender) {
         return employees.stream()
             .filter(employee -> employee.getGender().equals(gender))
             .collect(Collectors.toList());
     }
 
-    @Override
     public Employee create(Employee employee) {
         final Employee newEmployee = new Employee(
             this.findAll().size() + 1,
@@ -58,7 +54,6 @@ public class EmployeeRepository implements IEmployeeRepository {
         return newEmployee;
     }
 
-    @Override
     public Employee update(Integer id, Employee employee) {
         return employees.stream()
             .filter(storedEmployee -> storedEmployee.getId().equals(id))
@@ -83,12 +78,10 @@ public class EmployeeRepository implements IEmployeeRepository {
         return employeeStored;
     }
 
-    @Override
     public void deleteById(Integer id) {
         employees.removeIf(employee -> Objects.equals(employee.getId(), id));
     }
 
-    @Override
     public List<Employee> findAllByPage(Integer pageIndex, Integer pageSize) {
         return employees.stream()
             .skip((long) (pageIndex - 1) * pageSize)
