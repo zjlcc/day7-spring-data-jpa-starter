@@ -2,6 +2,7 @@ package com.oocl.springbootemployee.service;
 
 import com.oocl.springbootemployee.exception.EmployeeAgeNotValidException;
 import com.oocl.springbootemployee.exception.EmployeeAgeSalaryNotMatchedException;
+import com.oocl.springbootemployee.exception.EmployeeInactiveException;
 import com.oocl.springbootemployee.model.Employee;
 import com.oocl.springbootemployee.model.Gender;
 import com.oocl.springbootemployee.repository.EmployeeMemoryRepository;
@@ -105,18 +106,18 @@ class EmployeeServiceTest {
         assertThrows(EmployeeAgeSalaryNotMatchedException.class, () -> employeeService.create(bob));
         verify(mockedEmployeeRepository, never()).save(any());
     }
-//
-//    @Test
-//    void should_throw_EmployeeInactiveException_when_update_inactive_employee() {
-//        //given
-//        EmployeeMemoryRepository mockedEmployeeMemoryRepository = mock(EmployeeMemoryRepository.class);
-//        Employee inactiveEmployee = new Employee(1, "Bob", 31, Gender.FEMALE, 8000.0);
-//        inactiveEmployee.setActive(false);
-//        when(mockedEmployeeMemoryRepository.findById(1)).thenReturn(inactiveEmployee);
-//        EmployeeService employeeService = new EmployeeService(mockedEmployeeMemoryRepository);
-//        //when
-//        //then
-//        assertThrows(EmployeeInactiveException.class, () -> employeeService.update(1, inactiveEmployee));
-//        verify(mockedEmployeeMemoryRepository, never()).create(any());
-//    }
+
+    @Test
+    void should_throw_EmployeeInactiveException_when_update_inactive_employee() {
+        //given
+        build();
+        Employee inactiveEmployee = new Employee(1, "Bob", 31, Gender.FEMALE, 8000.0);
+        inactiveEmployee.setActive(false);
+        when(mockedEmployeeMemoryRepository.findById(1)).thenReturn(inactiveEmployee);
+        EmployeeService employeeService = new EmployeeService(mockedEmployeeMemoryRepository, mockedEmployeeRepository);
+        //when
+        //then
+        assertThrows(EmployeeInactiveException.class, () -> employeeService.update(1, inactiveEmployee));
+        verify(mockedEmployeeRepository, never()).save(any());
+    }
 }
