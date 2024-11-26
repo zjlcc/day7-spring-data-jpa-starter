@@ -94,17 +94,17 @@ class EmployeeServiceTest {
         verify(mockedEmployeeRepository).save(argThat(Employee::getActive));
     }
 
-//    @Test
-//    void should_throw_EmployeeAgeSalaryNotMatchedException_when_save_given_a_employee_with_age_over_30_and_salary_below_20K() {
-//        //given
-//        EmployeeMemoryRepository mockedEmployeeMemoryRepository = mock(EmployeeMemoryRepository.class);
-//        Employee bob = new Employee(1, "Bob", 31, Gender.FEMALE, 8000.0);
-//        EmployeeService employeeService = new EmployeeService(mockedEmployeeMemoryRepository);
-//        //when
-//        //then
-//        assertThrows(EmployeeAgeSalaryNotMatchedException.class, () -> employeeService.create(bob));
-//        verify(mockedEmployeeMemoryRepository, never()).create(any());
-//    }
+    @Test
+    void should_throw_EmployeeAgeSalaryNotMatchedException_when_save_given_a_employee_with_age_over_30_and_salary_below_20K() {
+        //given
+        build();
+        Employee bob = new Employee(1, "Bob", 31, Gender.FEMALE, 8000.0);
+        EmployeeService employeeService = new EmployeeService(mockedEmployeeMemoryRepository, mockedEmployeeRepository);
+        //when
+        //then
+        assertThrows(EmployeeAgeSalaryNotMatchedException.class, () -> employeeService.create(bob));
+        verify(mockedEmployeeRepository, never()).save(any());
+    }
 //
 //    @Test
 //    void should_throw_EmployeeInactiveException_when_update_inactive_employee() {
