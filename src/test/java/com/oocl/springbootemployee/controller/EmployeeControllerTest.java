@@ -6,8 +6,10 @@ import static org.hamcrest.Matchers.hasSize;
 
 import com.oocl.springbootemployee.model.Employee;
 import com.oocl.springbootemployee.model.Gender;
-import com.oocl.springbootemployee.repository.EmployeeRepository;
+import com.oocl.springbootemployee.repository.EmployeeMemoryRepository;
 import java.util.List;
+
+import com.oocl.springbootemployee.repository.EmployeeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,19 +31,36 @@ class EmployeeControllerTest {
     private MockMvc client;
 
     @Autowired
-    private EmployeeRepository employeeRepository;
+    private EmployeeMemoryRepository employeeMemoryRepository;
 
     @Autowired
     private JacksonTester<List<Employee>> employeesJacksonTester;
 
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
     @BeforeEach
     void setUp() {
-        employeeRepository.findAll().clear();
-        employeeRepository.create(new Employee(1, "John Smith", 32, Gender.MALE, 5000.0));
-        employeeRepository.create(new Employee(2, "Jane Johnson", 28, Gender.FEMALE, 6000.0));
-        employeeRepository.create(new Employee(3, "David Williams", 35, Gender.MALE, 5500.0));
-        employeeRepository.create(new Employee(4, "Emily Brown", 23, Gender.FEMALE, 4500.0));
-        employeeRepository.create(new Employee(5, "Michael Jones", 40, Gender.MALE, 7000.0));
+        getDataFromMemory();
+        getDataFromDataBase();
+    }
+
+    private void getDataFromMemory() {
+        employeeMemoryRepository.findAll().clear();
+        employeeMemoryRepository.create(new Employee(1, "John Smith", 32, Gender.MALE, 5000.0));
+        employeeMemoryRepository.create(new Employee(2, "Jane Johnson", 28, Gender.FEMALE, 6000.0));
+        employeeMemoryRepository.create(new Employee(3, "David Williams", 35, Gender.MALE, 5500.0));
+        employeeMemoryRepository.create(new Employee(4, "Emily Brown", 23, Gender.FEMALE, 4500.0));
+        employeeMemoryRepository.create(new Employee(5, "Michael Jones", 40, Gender.MALE, 7000.0));
+    }
+
+    private void getDataFromDataBase() {
+        employeeRepository.deleteAll();
+        employeeRepository.save(new Employee("John Smith", 32, Gender.MALE, 5000.0));
+        employeeRepository.save(new Employee("Jane Johnson", 28, Gender.FEMALE, 6000.0));
+        employeeRepository.save(new Employee("David Williams", 35, Gender.MALE, 5500.0));
+        employeeRepository.save(new Employee("Emily Brown", 23, Gender.FEMALE, 4500.0));
+        employeeRepository.save(new Employee("Michael Jones", 40, Gender.MALE, 7000.0));
     }
 
     @Test
@@ -68,7 +87,7 @@ class EmployeeControllerTest {
 
         // When
         // Then
-        client.perform(MockMvcRequestBuilders.get("/employees/1"))
+        client.perform(MockMvcRequestBuilders.get("/employees/" + givenEmployee.getId()))
             .andExpect(MockMvcResultMatchers.status().isOk())
             .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(givenEmployee.getId()))
             .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(givenEmployee.getName()))
@@ -105,7 +124,7 @@ class EmployeeControllerTest {
     @Test
     void should_create_employee_success() throws Exception {
         // Given
-        employeeRepository.findAll().clear();
+        employeeRepository.deleteAll();
         String givenName = "New Employee";
         Integer givenAge = 18;
         Gender givenGender = Gender.FEMALE;
@@ -132,7 +151,6 @@ class EmployeeControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$.salary").value(givenSalary));
         List<Employee> employees = employeeRepository.findAll();
         assertThat(employees).hasSize(1);
-        assertThat(employees.get(0).getId()).isEqualTo(1);
         assertThat(employees.get(0).getName()).isEqualTo(givenName);
         assertThat(employees.get(0).getAge()).isEqualTo(givenAge);
         assertThat(employees.get(0).getGender()).isEqualTo(givenGender);
@@ -168,7 +186,7 @@ class EmployeeControllerTest {
             .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(givenAge))
             .andExpect(MockMvcResultMatchers.jsonPath("$.gender").value(givenGender.name()))
             .andExpect(MockMvcResultMatchers.jsonPath("$.salary").value(givenSalary));
-        List<Employee> employees = employeeRepository.findAll();
+        List<Employee> employees = employeeMemoryRepository.findAll();
         assertThat(employees).hasSize(5);
         assertThat(employees.get(0).getId()).isEqualTo(1);
         assertThat(employees.get(0).getName()).isEqualTo(givenName);
@@ -180,7 +198,7 @@ class EmployeeControllerTest {
     @Test
     void should_remove_employee_success() throws Exception {
         // Given
-        int givenId = 1;
+        int givenId = employeeRepository.findAll().get(0).getId();
 
         // When
         // Then
@@ -188,10 +206,10 @@ class EmployeeControllerTest {
             .andExpect(MockMvcResultMatchers.status().isNoContent());
         List<Employee> employees = employeeRepository.findAll();
         assertThat(employees).hasSize(4);
-        assertThat(employees.get(0).getId()).isEqualTo(2);
-        assertThat(employees.get(1).getId()).isEqualTo(3);
-        assertThat(employees.get(2).getId()).isEqualTo(4);
-        assertThat(employees.get(3).getId()).isEqualTo(5);
+        assertThat(employees.get(0).getId()).isEqualTo(givenId+1);
+        assertThat(employees.get(1).getId()).isEqualTo(givenId+2);
+        assertThat(employees.get(2).getId()).isEqualTo(givenId+3);
+        assertThat(employees.get(3).getId()).isEqualTo(givenId+4);
     }
 
     @Test
