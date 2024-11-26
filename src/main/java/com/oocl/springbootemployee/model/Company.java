@@ -8,11 +8,11 @@ import java.util.List;
 @Entity
 public class Company {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
-
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "companyId")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "company_id")
     private List<Employee> employees = new ArrayList<>();
 
     public Company(Integer id, String name, List<Employee> employees) {
@@ -24,6 +24,11 @@ public class Company {
     public Company(Integer id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Company(String name, List<Employee> employees) {
+        this.name = name;
+        this.employees = employees;
     }
 
     public Company() {}

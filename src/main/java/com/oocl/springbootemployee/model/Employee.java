@@ -13,7 +13,10 @@ public class Employee {
     private Gender gender;
     private Double salary;
     private Boolean isActive = true;
-    private Integer companyId;
+
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
 
     public Employee(Integer id, String name, Integer age, Gender gender, Double salary) {
 
